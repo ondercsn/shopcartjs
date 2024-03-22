@@ -1,13 +1,16 @@
 {
     "name": "shopcartjs",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "description": "",
     "main": "index.js",
     "type": "module",
     "keywords": [
         "shopcart",
         "cart",
-        "cartjs"
+        "cartjs",
+        "productmanager",
+        "product",
+        "category"
     ],
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,7 +18,8 @@
     "author": "ondercsn",
     "license": "MIT",
     "dependencies": {
-        "js-cookie": "^3.0.5"
+        "js-cookie": "^3.0.5",
+        "monijs": "^1.0.4"
     },
     "repository": {
         "type": "git",
