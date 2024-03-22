@@ -1,5 +1,3 @@
-import { Product } from "product";
-
 export default class Item
 {
     options = [];
@@ -8,19 +6,18 @@ export default class Item
 
     constructor(product, price, currency, quantity=1, attributes={})
     {
-        if (!(product instanceof Product)) {
-            throw new Error('Product must be an instance of Product');
-        }
-
-        this.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+        this.id = this.generateHash();
 
         this.product = product;
         this.quantity = quantity;
         this.price = price;
         this.currency = currency;
 
-
         this.attributes = attributes;
+    }
+
+    generateHash() {
+        return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     }
 
     setAttribute(key, value) {
@@ -36,12 +33,12 @@ export default class Item
     }
 
     getSubtotal() {
-        return this.product.price * this.quantity;
+        return this.price * this.quantity;
     }
 
     toJSON() {
         return {
-            product: this.product.toJSON(),
+            product: JSON.stringify(this.product),
             quantity: this.quantity,
             price: this.price,
             currency: this.currency,
