@@ -1,5 +1,5 @@
 import Money from "monijs";
-
+import { toJSON, stringify } from "flatted";
 export default class Product
 {
     attributes = [];
@@ -12,9 +12,11 @@ export default class Product
         this.price = price;
         this.data = data;
 
-        //if (price !== null) {
         this.price = this.priceToMoney(price, currency);
-        //}
+    }
+
+    setPrice(price, currency) {
+        this.price = this.priceToMoney(price, currency);
     }
 
     priceToMoney(amount, currencyCode=null) {
@@ -29,15 +31,8 @@ export default class Product
         this.data[key] = value;
     }
 
-
-    toJson()
-    {
-        let jsonObj = {};
-        let properties = Object.getOwnPropertyNames(this);
-        for (let prop of properties) {
-            jsonObj[prop] = this[prop];
-        }
-        return JSON.stringify(jsonObj);
+    toJson() {
+        return toJSON(this);
     }
 
     validateQuantity(quantity=null) {
@@ -58,7 +53,7 @@ export default class Product
         this.attributes = this.attributes.filter(attribute => attribute.hash !== hash);
     }
 
-    addOption(option) 
+    addOption(option)
     {
         if (!(attribute instanceof Option))
             throw new Error('Invalid option');
@@ -74,6 +69,9 @@ export default class Product
         });
     }
 
-    
+    simplify() {
+        this.subcategory = null;
+        return this;
+    }
 
 }

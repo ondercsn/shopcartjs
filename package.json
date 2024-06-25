@@ -18,6 +18,7 @@
     "author": "ondercsn",
     "license": "MIT",
     "dependencies": {
+        "flatted": "^3.3.1",
         "js-cookie": "^3.0.5",
         "monijs": "^1.0.4"
     },

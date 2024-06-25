@@ -1,3 +1,5 @@
+import {stringify, toJSON} from 'flatted';
+
 export default class CartItem
 {
     options = [];
@@ -37,13 +39,19 @@ export default class CartItem
     }
 
     toJSON() {
+        let product = this.product;
+        if (product !== null) {
+            product = product.simplify();
+        }
         return {
-            product: JSON.stringify(this.product),
+            product: product, //? toJSON(this.product.simplify()) : null,
+            options: this.options,
             quantity: this.quantity,
             price: this.price,
             currency: this.currency,
             subTotal: this.getSubtotal(),
             data: this.data,
+            attributes: this.attributes,
         };
     }
 

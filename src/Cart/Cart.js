@@ -1,29 +1,47 @@
-import Item from './Item.js';
-
+import { toJSON as flatted_tojson } from "flatted";
 export default class Cart
 {
     items = [];
+    storage = null;
+    storageKey = "cart";
+    options = [];
 
-    constructor(type) {
+    constructor(type, attributes={}) 
+    {
         this.type = type;
+        this.storage = attributes.storage ?? null;
+        this.storageKey = attributes.storageKey ?? this.storageKey;
     }
 
-    addCartToCookie() {
-        const cart = this.toJSON();
-        localStorage.setItem('cart', JSON.stringify(cart));
+    save() {
+        const items = this.items.map(item => item.toJSON());
+        const stringItems = [];
+        /*for (const item of items) {
+            item.product = item.product.id;
+            stringItems.push(JSON.stringify(item));
+        }*/
+
+        this.storage.set(this.storageKey, stringItems);
     }
 
-    add(item) {
-        if(!(item instanceof Item)) {
+    add(item) 
+    {
+        /*if(!(item instanceof CartItem)) {
             throw new Error('item add error');
-        }
+        }*/
         this.items.push(item);
         this.dispatchEvent('cartItemsChanged', this.items);
         this.dispatchEvent('cartUpdated');
     }
 
-    addOption(option) {
-        this.options.push(option);
+    addOption(cartItem, option) {
+        this.items = this.items.map(item => {
+            if(item.id === cartItem.id) {
+                item.options.push(option);
+            }
+            return item;
+        });
+        //this.options.push(option);
     }
 
 
@@ -56,6 +74,9 @@ export default class Cart
     }
 
     toJSON() {
-        return this.items.map(item => item.toJSON());
+        return JSON.stringify({
+            items: this.items.map((item) => item.toJSON()),
+            type: this.type,
+        });
     }
 }
